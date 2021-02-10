@@ -25,7 +25,8 @@ function paintShows() {
   htmlCode += "<ul>";
   for (const serie of series) {
     console.log(serie.show.image);
-    htmlCode += "<li class='js-serie'>";
+    htmlCode += `<li class='js-serie' id='${serie.show.id}'>`;
+    htmlCode += `<div class="palette__color" style="background-color: #${paletteColor}"></div>`;
     htmlCode += `<p>Nombre: ${serie.show.name}</p>`;
     if (serie.show.image !== null) {
       htmlCode += `<img src="${serie.show.image.medium}"/>`;
@@ -36,47 +37,47 @@ function paintShows() {
   }
   htmlCode += "</ul>";
   seriesElement.innerHTML = htmlCode;
+  // después de pintar es cuando puedo escuchar clicks sobre lo que he pintado
   listenSeriesEvents();
 }
+//pintar paletas favoritas//
+const favouriteElement = document.querySelector(".js-favourites");
 
+function paintFavourites() {
+  let htmlCode = "";
+  htmlCode += "<ul>";
+  for (const favouriteElement of favouritElemnts) {
+    htmlCode += `<li class='js-favourites' id='${favouriteElement.show.id}'>`;
+    htmlCode += `<p>Nombre: ${favouriteElement.show.name}</p>`;
+    if (serie.show !== null) {
+      htmlCode += `<img src="${favouriteElement.show.image.medium}"/>`;
+    } else {
+    }
+  }
+  setInLocalStorage();
+}
+htmlCode += "</ul>";
+favouriteElement.innerHTML = htmlCode;
 button.addEventListener("click", getDataFromApi);
 
 function listenSeriesEvents() {
-  /*  document.querySelectorAll
-  for (const iterator of object) {
-    addEventListener("click",listenSeriesEvents);
-  }*/
+  const seriesElements = document.querySelectorAll(".js-serie");
+  for (const seriesElement of seriesElements) {
+    seriesElement.addEventListener("click", handleSerie);
+  }
 }
 
-/*// local storage
+// función que se ejecuta cuando la usuaria hace click en una serie
+function handleSerie(ev) {
+  console.log(ev.currentTarget);
+  favourite.push(series[0]);
+  console.log(favourite);
+  paintFavourites();
+}
 
+/*localstorage
 function setInLocalStorage() {
-  const stringPalettes = JSON.stringify(palettes);
-  localStorage.setItem('palettes', stringPalettes);
-}
-
-function getFromLocalStorage() {
-  const localStoragePalettes = localStorage.getItem('palettes');
-  if (localStoragePalettes === null) {
-    getDataFromApi();
-  } else {
-    const arrayPalettes = JSON.parse(localStoragePalettes);
-    palettes = arrayPalettes;
-    paintPalettes();
-  }
-}
-
-function getFromLocalStorage() {
-  const localStoragePalettes = localStorage.getItem('palettes');
-  if (localStoragePalettes === null) {
-    getDataFromApi();
-  } else {
-    const arrayPalettes = JSON.parse(localStoragePalettes);
-    palettes = arrayPalettes;
-    paintPalettes();
-  }
-}
-
-  
+  const stringFavourites = JSON.stringify(favourite);
+  localStorage.setItem('favourite', stringFavourites);
 }
 */
