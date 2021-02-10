@@ -1,4 +1,6 @@
 .input {
+  border-top: none;
+  border-bottom: solid;
 }
 
 .input-search {
@@ -6,5 +8,14 @@
   background-color: goldenrod;
 }
 .buscador {
-  background-color: honeydew;
+  background-color: goldenrod;
+  text-align: center;
+  color: black;
+  font-size: 40px;
+}
+
+.favourite {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: red;
+  text-align: start;
 }

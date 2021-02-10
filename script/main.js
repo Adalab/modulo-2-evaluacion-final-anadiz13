@@ -1,9 +1,8 @@
 "use strict";
 
 let series = [];
-let favourite = [];
+let favourites = [];
 
-//al arrancar
 const inputElement = document.querySelector(".js-user");
 const button = document.querySelector(".js-search");
 
@@ -16,17 +15,12 @@ function getDataFromApi() {
       paintShows();
     });
 }
-
-//pintar//
-
 const seriesElement = document.querySelector(".js-series");
 function paintShows() {
   let htmlCode = "";
   htmlCode += "<ul>";
   for (const serie of series) {
-    console.log(serie.show.image);
     htmlCode += `<li class='js-serie' id='${serie.show.id}'>`;
-    htmlCode += `<div class="palette__color" style="background-color: #${paletteColor}"></div>`;
     htmlCode += `<p>Nombre: ${serie.show.name}</p>`;
     if (serie.show.image !== null) {
       htmlCode += `<img src="${serie.show.image.medium}"/>`;
@@ -37,27 +31,28 @@ function paintShows() {
   }
   htmlCode += "</ul>";
   seriesElement.innerHTML = htmlCode;
-  // después de pintar es cuando puedo escuchar clicks sobre lo que he pintado
   listenSeriesEvents();
 }
-//pintar paletas favoritas//
 const favouriteElement = document.querySelector(".js-favourites");
 
 function paintFavourites() {
   let htmlCode = "";
   htmlCode += "<ul>";
-  for (const favouriteElement of favouritElemnts) {
-    htmlCode += `<li class='js-favourites' id='${favouriteElement.show.id}'>`;
-    htmlCode += `<p>Nombre: ${favouriteElement.show.name}</p>`;
-    if (serie.show !== null) {
-      htmlCode += `<img src="${favouriteElement.show.image.medium}"/>`;
+  for (const favourite of favourites) {
+    htmlCode += `<li class='js-favourites' id='${favourite.show.id}'>`;
+    htmlCode += `<p>Nombre: ${favourite.show.name}</p>`;
+    if (favourite.show.image !== null) {
+      htmlCode += `<img src="${favourite.show.image.medium}"/>`;
     } else {
+      htmlCode += `<img src="https://via.placeholder.com/210x295/ffffff/666666/?text=TV."/>`;
     }
+    htmlCode += "</li>";
   }
+  htmlCode += "</ul>";
+  favouriteElement.innerHTML = htmlCode;
   setInLocalStorage();
 }
-htmlCode += "</ul>";
-favouriteElement.innerHTML = htmlCode;
+
 button.addEventListener("click", getDataFromApi);
 
 function listenSeriesEvents() {
@@ -67,17 +62,27 @@ function listenSeriesEvents() {
   }
 }
 
-// función que se ejecuta cuando la usuaria hace click en una serie
 function handleSerie(ev) {
-  console.log(ev.currentTarget);
-  favourite.push(series[0]);
-  console.log(favourite);
+  const clickedSerieId = parseInt(ev.currentTarget.id);
+  const serieFound = series.find((serie) => {
+    return serie.show.id === clickedSerieId;
+  });
+  favourites.push(serieFound);
+
   paintFavourites();
 }
 
-/*localstorage
 function setInLocalStorage() {
-  const stringFavourites = JSON.stringify(favourite);
-  localStorage.setItem('favourite', stringFavourites);
+  const stringFavourites = JSON.stringify(favourites);
+  localStorage.setItem("favourites", stringFavourites);
 }
-*/
+
+function getFromLocalStorage() {
+  const localStorageFavourite = localStorage.getItem("favourites");
+  if (localStorageFavourite !== null) {
+    favourites = JSON.parse(localStorageFavourite);
+    paintFavourites();
+  }
+}
+
+getFromLocalStorage();
